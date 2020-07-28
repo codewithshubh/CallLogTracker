@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "270044095826",
+    "firebase_url": "https://call-log-tracker2.firebaseio.com",
+    "project_id": "call-log-tracker2",
+    "storage_bucket": "call-log-tracker2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:270044095826:android:0b361f034f0f9caa07068b",
+        "android_client_info": {
+          "package_name": "com.codewithshubh.calllogtracker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "270044095826-cbornie3658m1efuf8rpirmjlqj7b6ik.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBPPGffUZKXkeNxKLZdigI0E8vWo3iSC7A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "270044095826-cbornie3658m1efuf8rpirmjlqj7b6ik.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
