@@ -8,6 +8,10 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.work.Constraints;
+import androidx.work.NetworkType;
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkManager;
 
 import android.Manifest;
 import android.content.ComponentName;
@@ -27,9 +31,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final String TAG_SEND_DATA = "Sending data to server";
     private ArrayList<CallLogModel> callLogModelArrayList;
     private RecyclerView rv_call_logs;
     private CallLogAdapter callLogAdapter;
@@ -75,7 +81,28 @@ public class MainActivity extends AppCompatActivity {
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
+        SettingUpPeriodicWork();
+    }
 
+    private void SettingUpPeriodicWork() {
+        // Create Network constraint
+        Constraints constraints = new Constraints.Builder()
+                .setRequiredNetworkType(NetworkType.CONNECTED)
+                .setRequiresBatteryNotLow(true)
+                .setRequiresStorageNotLow(true)
+                .build();
+
+
+        PeriodicWorkRequest periodicSendDataWork =
+                new PeriodicWorkRequest.Builder(SendDataWorker.class, 15, TimeUnit.MINUTES)
+                        .addTag(TAG_SEND_DATA)
+                        .setConstraints(constraints)
+                        // setting a backoff on case the work needs to retry
+                        //.setBackoffCriteria(BackoffPolicy.LINEAR, PeriodicWorkRequest.MIN_BACKOFF_MILLIS, TimeUnit.MILLISECONDS)
+                        .build();
+
+        WorkManager workManager = WorkManager.getInstance(this);
+        workManager.enqueue(periodicSendDataWork);
     }
 
     public boolean CheckAndRequestPermission() {
@@ -153,7 +180,7 @@ public class MainActivity extends AppCompatActivity {
                     "HH:mm:ss");
             str_call_time = timeFormatter.format(new Date(Long.parseLong(str_call_full_date)));
 
-            str_call_time_formatted = getFormatedDateTime(str_call_time, "HH:mm:ss", "hh:mm a");
+            //str_call_time = getFormatedDateTime(str_call_time, "HH:mm:ss", "hh:mm ss");
 
             str_call_duration = DurationFormat(str_call_duration);
 
